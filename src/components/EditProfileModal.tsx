@@ -45,16 +45,23 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({ onClose }) => {
         <Form>
           <div>
             <label>Name:</label>
+
             <Field name="name" />
+
             <ErrorMessage name="name" component="div" />
           </div>
+
           <div>
             <label>Email:</label>
+
             <Field name="email" type="email" />
+
             <ErrorMessage name="email" component="div" />
           </div>
+
           <div>
             <label>Profile Picture:</label>
+
             <input
               name="profilePicture"
               type="file"
@@ -64,10 +71,7 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({ onClose }) => {
                   ? event.currentTarget.files[0]
                   : null;
 
-                console.log("file: ", file);
-
                 if (file) {
-                  console.log("fileCorrectSize(file): ", fileCorrectSize(file));
                   if (!fileCorrectSize(file)) {
                     setFieldError(
                       "profilePicture",
@@ -87,6 +91,7 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({ onClose }) => {
             )}
             {/* <ErrorMessage name="profilePicture" component="div" /> */}
           </div>
+
           <button disabled={!isValid || isSubmitting} type="submit">
             Submit
           </button>

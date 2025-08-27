@@ -11,6 +11,7 @@ export default function Profile() {
   // Simulated fetch using async function
   const fetchProfileData = async () => {
     setLoading(true);
+
     return new Promise<{ name: string; email: string }>((resolve) =>
       setTimeout(() => {
         resolve({ name: "John Doe", email: "johndoe123@test.com" });
@@ -20,7 +21,6 @@ export default function Profile() {
   };
 
   useEffect(() => {
-    // Only fetch if no profile data in context (i.e., localStorage was empty)
     if (!profileData.name && !profileData.email) {
       const setProfileData = async () => {
         const fetchedData = await fetchProfileData();
@@ -40,8 +40,11 @@ export default function Profile() {
     <div>
       {loading && <div className="LoadingProfile">Loading profile...</div>}
       <h2>Profile:</h2>
+
       <div>Name: {profileData.name}</div>
+
       <div>Email: {profileData.email}</div>
+
       <div>
         Profile Picture:{" "}
         {profileData.profilePicture ? (
