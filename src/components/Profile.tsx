@@ -8,7 +8,6 @@ export default function Profile() {
   const [editProfile, setEditProfile] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
 
-  // Simulated fetch using async function
   const fetchProfileData = async () => {
     setLoading(true);
 
