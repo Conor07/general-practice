@@ -4,9 +4,10 @@ import {
   initialState,
   ProfileState,
   ProfileAction,
+  PROFILE_DATA_LOCAL_STORAGE_KEY,
+  PROFILE_HISTORY_LOCAL_STORAGE_KEY,
+  ProfileData,
 } from "./profileReducer";
-
-const LOCAL_STORAGE_KEY = "profileData";
 
 const base64ToFile = (base64: string, filename: string): File => {
   const arr = base64.split(",");
@@ -23,23 +24,72 @@ const base64ToFile = (base64: string, filename: string): File => {
 };
 
 const getInitialState = (): ProfileState => {
-  const stored = localStorage.getItem(LOCAL_STORAGE_KEY);
-  if (stored) {
-    try {
-      const parsed = JSON.parse(stored);
+  const storedProfileData = localStorage.getItem(
+    PROFILE_DATA_LOCAL_STORAGE_KEY
+  );
 
-      return {
-        profileData: {
-          ...parsed,
-          profilePicture: parsed.profilePicture
-            ? base64ToFile(parsed.profilePicture, "profilePicture.png")
-            : null,
-        },
-      };
+  const storedProfileDataHistory = localStorage.getItem(
+    PROFILE_HISTORY_LOCAL_STORAGE_KEY
+  );
+
+  console.log("storedProfileDataHistory: ", storedProfileDataHistory);
+
+  let finalProfileData = null;
+
+  let finalProfileHistoryData = null;
+
+  if (storedProfileData) {
+    try {
+      const parsedProfileData = JSON.parse(storedProfileData);
+
+      console.log(
+        "parsedProfileData.profilePicture: ",
+        parsedProfileData.profilePicture
+      );
+
+      finalProfileData = parsedProfileData
+        ? {
+            ...parsedProfileData,
+            profilePicture: parsedProfileData.profilePicture
+              ? base64ToFile(
+                  parsedProfileData.profilePicture,
+                  "profilePicture.png"
+                )
+              : null,
+          }
+        : initialState.profileData;
     } catch {
-      return initialState;
+      finalProfileData = initialState.profileData;
     }
   }
+
+  if (storedProfileDataHistory) {
+    try {
+      const parsedProfileHistoryData = storedProfileDataHistory
+        ? JSON.parse(storedProfileDataHistory)
+        : null;
+
+      finalProfileHistoryData = parsedProfileHistoryData
+        ? parsedProfileHistoryData.map((item: any) => {
+            console.log("item: ", item);
+            return {
+              ...item,
+              profilePicture: item.profilePicture
+                ? base64ToFile(item.profilePicture, "profilePicture.png")
+                : null,
+            };
+          })
+        : initialState.profileHistory;
+    } catch {
+      finalProfileHistoryData = initialState.profileHistory;
+    }
+
+    return {
+      profileData: finalProfileData,
+      profileHistory: finalProfileHistoryData,
+    };
+  }
+
   return initialState;
 };
 

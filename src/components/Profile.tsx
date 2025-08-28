@@ -4,7 +4,7 @@ import EditProfileModal from "./EditProfileModal";
 
 export default function Profile() {
   const { state, dispatch } = useContext(ProfileContext);
-  const { profileData } = state;
+  const { profileData, profileHistory } = state;
   const [editProfile, setEditProfile] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -58,9 +58,63 @@ export default function Profile() {
         )}
       </div>
 
-      <button disabled={loading} onClick={() => setEditProfile(!editProfile)}>
-        {editProfile ? "Close Edit" : "Edit Profile"}
+      <button
+        disabled={loading || editProfile}
+        onClick={() => setEditProfile(true)}
+      >
+        Edit Profile
       </button>
+
+      <h3>Profile Update History:</h3>
+
+      <button
+        className="ClearProfileHistory"
+        onClick={() => {
+          dispatch({ type: "CLEAR_PROFILE_HISTORY" });
+        }}
+        disabled={
+          loading ||
+          editProfile ||
+          !profileHistory ||
+          (profileHistory && profileHistory.length === 0)
+        }
+      >
+        Clear Profile History
+      </button>
+
+      {profileHistory && profileHistory.length > 0 ? (
+        <ul>
+          {profileHistory.reverse().map((entry, index) => (
+            <li key={index}>
+              <div>
+                <strong>Updated At:</strong>{" "}
+                {new Date(entry.timestamp).toLocaleString()}
+              </div>
+              <div>
+                <strong>Name:</strong> {entry.name}
+              </div>
+              <div>
+                <strong>Email:</strong> {entry.email}
+              </div>
+              <div>
+                <strong>Profile Picture:</strong>{" "}
+                {entry.profilePicture ? (
+                  <img
+                    src={URL.createObjectURL(entry.profilePicture)}
+                    alt="Profile"
+                    width={50}
+                    height={50}
+                  />
+                ) : (
+                  "No profile picture"
+                )}
+              </div>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <div>No profile updates yet.</div>
+      )}
 
       {editProfile && (
         <EditProfileModal onClose={() => setEditProfile(false)} />

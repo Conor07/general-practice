@@ -5,7 +5,7 @@ import { profileValidationSchema } from "../validation/profileValidation";
 import { ProfileData } from "../context/profileReducer";
 import { error } from "console";
 
-const MAX__FILE_SIZE = 4000 * 1024; // 4MB
+const MAX__FILE_SIZE = 250 * 1024; // 250KB
 
 interface EditProfileModalProps {
   onClose?: () => void;
@@ -37,6 +37,19 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({ onClose }) => {
       validationSchema={profileValidationSchema}
       onSubmit={(values, { resetForm }) => {
         dispatch({ type: "UPDATE_PROFILE", payload: values });
+
+        dispatch({
+          type: "UPDATE_PROFILE_HISTORY",
+          payload: state.profileHistory
+            ? [{ ...values, timestamp: Date.now() }, ...state.profileHistory]
+            : [
+                {
+                  ...values,
+                  timestamp: Date.now(),
+                },
+              ],
+        });
+
         resetForm();
         if (onClose) onClose();
       }}
@@ -75,7 +88,7 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({ onClose }) => {
                   if (!fileCorrectSize(file)) {
                     setFieldError(
                       "profilePicture",
-                      "File size exceeds 4MB limit"
+                      "File size exceeds 250KB limit"
                     );
                   } else {
                     setFieldValue("profilePicture", file);
@@ -91,6 +104,16 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({ onClose }) => {
             )}
             {/* <ErrorMessage name="profilePicture" component="div" /> */}
           </div>
+
+          <button
+            className="CloseModal"
+            onClick={() => {
+              if (onClose) onClose();
+            }}
+            disabled={!onClose}
+          >
+            Cancel
+          </button>
 
           <button disabled={!isValid || isSubmitting} type="submit">
             Submit
