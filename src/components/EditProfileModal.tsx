@@ -1,9 +1,8 @@
 import React, { useContext } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { ProfileContext } from "../context/ProfileContext";
+import { AppContext } from "../context/AppContext";
 import { profileValidationSchema } from "../validation/profileValidation";
 import { ProfileData } from "../context/profileReducer";
-import { error } from "console";
 
 const MAX__FILE_SIZE = 250 * 1024; // 250KB
 
@@ -12,10 +11,9 @@ interface EditProfileModalProps {
 }
 
 const EditProfileModal: React.FC<EditProfileModalProps> = ({ onClose }) => {
-  const { dispatch } = useContext(ProfileContext);
-
-  const { state } = useContext(ProfileContext);
-  const { profileData } = state;
+  const { state, dispatch } = useContext(AppContext);
+  const { profile } = state;
+  const { profileData, profileHistory } = profile;
 
   const initialValues: ProfileData = {
     name: profileData?.name ?? "",
@@ -40,8 +38,8 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({ onClose }) => {
 
         dispatch({
           type: "UPDATE_PROFILE_HISTORY",
-          payload: state.profileHistory
-            ? [{ ...values, timestamp: Date.now() }, ...state.profileHistory]
+          payload: profileHistory
+            ? [{ ...values, timestamp: Date.now() }, ...profileHistory]
             : [
                 {
                   ...values,

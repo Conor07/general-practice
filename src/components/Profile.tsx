@@ -1,10 +1,11 @@
 import React, { useState, useContext, useEffect } from "react";
-import { ProfileContext } from "../context/ProfileContext";
+import { AppContext } from "../context/AppContext";
 import EditProfileModal from "./EditProfileModal";
 
 export default function Profile() {
-  const { state, dispatch } = useContext(ProfileContext);
-  const { profileData, profileHistory } = state;
+  const { state, dispatch } = useContext(AppContext);
+  const { profile } = state;
+  const { profileData, profileHistory } = profile;
   const [editProfile, setEditProfile] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
 

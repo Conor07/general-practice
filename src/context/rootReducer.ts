@@ -1,4 +1,3 @@
-import React, { createContext, useReducer, ReactNode } from "react";
 import {
   profileReducer,
   initialState,
@@ -8,6 +7,12 @@ import {
   PROFILE_HISTORY_LOCAL_STORAGE_KEY,
   ProfileData,
 } from "./profileReducer";
+import {
+  signedInReducer,
+  SignedInState,
+  SignedInAction,
+  initialSignedInState,
+} from "./signedInReducer";
 
 const base64ToFile = (base64: string, filename: string): File => {
   const arr = base64.split(",");
@@ -23,7 +28,7 @@ const base64ToFile = (base64: string, filename: string): File => {
   return new File([u8arr], filename, { type: mime });
 };
 
-const getInitialState = (): ProfileState => {
+const getInitialProfileState = (): ProfileState => {
   const storedProfileData = localStorage.getItem(
     PROFILE_DATA_LOCAL_STORAGE_KEY
   );
@@ -32,8 +37,6 @@ const getInitialState = (): ProfileState => {
     PROFILE_HISTORY_LOCAL_STORAGE_KEY
   );
 
-  console.log("storedProfileDataHistory: ", storedProfileDataHistory);
-
   let finalProfileData = null;
 
   let finalProfileHistoryData = null;
@@ -41,11 +44,6 @@ const getInitialState = (): ProfileState => {
   if (storedProfileData) {
     try {
       const parsedProfileData = JSON.parse(storedProfileData);
-
-      console.log(
-        "parsedProfileData.profilePicture: ",
-        parsedProfileData.profilePicture
-      );
 
       finalProfileData = parsedProfileData
         ? {
@@ -71,7 +69,6 @@ const getInitialState = (): ProfileState => {
 
       finalProfileHistoryData = parsedProfileHistoryData
         ? parsedProfileHistoryData.map((item: any) => {
-            console.log("item: ", item);
             return {
               ...item,
               profilePicture: item.profilePicture
@@ -93,20 +90,21 @@ const getInitialState = (): ProfileState => {
   return initialState;
 };
 
-export const ProfileContext = createContext<{
-  state: ProfileState;
-  dispatch: React.Dispatch<ProfileAction>;
-}>({
-  state: initialState,
-  dispatch: () => null,
-});
+export interface RootState {
+  profile: ProfileState;
+  settings: SignedInState;
+}
 
-export const ProfileProvider = ({ children }: { children?: ReactNode }) => {
-  const [state, dispatch] = useReducer(profileReducer, getInitialState());
+export type RootAction = ProfileAction | SignedInAction;
 
-  return (
-    <ProfileContext.Provider value={{ state, dispatch }}>
-      {children}
-    </ProfileContext.Provider>
-  );
+export const initialRootState: RootState = {
+  profile: getInitialProfileState(),
+  settings: initialSignedInState,
 };
+
+export function rootReducer(state: RootState, action: RootAction): RootState {
+  return {
+    profile: profileReducer(state.profile, action as ProfileAction),
+    settings: signedInReducer(state.settings, action as SignedInAction),
+  };
+}

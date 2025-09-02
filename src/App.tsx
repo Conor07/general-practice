@@ -3,11 +3,11 @@ import Compose from "./context/Compose";
 
 import "./App.css";
 import Profile from "./components/Profile";
-import { ProfileProvider } from "./context/ProfileContext";
+import { AppProvider } from "./context/AppContext";
 
 export default function App() {
   return (
-    <Compose components={[ProfileProvider]}>
+    <Compose components={[AppProvider]}>
       <div className="App">
         <Profile />
       </div>
