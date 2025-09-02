@@ -34,10 +34,10 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({ onClose }) => {
       initialValues={initialValues}
       validationSchema={profileValidationSchema}
       onSubmit={(values, { resetForm }) => {
-        dispatch({ type: "UPDATE_PROFILE", payload: values });
+        dispatch({ type: "PROFILE/UPDATE_PROFILE", payload: values });
 
         dispatch({
-          type: "UPDATE_PROFILE_HISTORY",
+          type: "PROFILE/UPDATE_PROFILE_HISTORY",
           payload: profileHistory
             ? [{ ...values, timestamp: Date.now() }, ...profileHistory]
             : [
