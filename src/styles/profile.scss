@@ -1,0 +1,170 @@
+.ProfileContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  min-height: 300px;
+
+  .LoadingProfile {
+    font-size: 18px;
+    color: #000;
+  }
+
+  .Profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background-color: #f9f9f9;
+    padding: 20px;
+    width: fit-content;
+
+    .Title {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .Name {
+      font-size: 20px;
+      color: #333;
+    }
+
+    .Email {
+      font-size: 20px;
+      color: #333;
+    }
+
+    .ProfilePicture {
+      font-size: 20px;
+      color: #333;
+      margin-top: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      justify-content: center;
+
+      img {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        object-fit: cover;
+      }
+    }
+
+    .EditProfileButton {
+      padding: 10px 15px;
+      background-color: #1890ff;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+
+      &:hover {
+        background-color: #40a9ff;
+      }
+
+      &:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+      }
+    }
+
+    .ProfileHistory {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      margin-top: 15px;
+
+      .HistoryTitle {
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: 5px;
+      }
+
+      .ClearProfileHistory {
+        padding: 8px 12px;
+        background-color: #ff4d4f;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-bottom: 10px;
+
+        &:hover {
+          background-color: #ff7875;
+        }
+
+        &:disabled {
+          background-color: #ccc;
+          cursor: not-allowed;
+        }
+      }
+
+      .ProfileHistoryList {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+        max-height: 200px;
+        overflow-y: auto;
+        width: 100%;
+
+        .ProfileHistoryListItem {
+          background-color: #fff;
+          border: 1px solid #ddd;
+          border-radius: 4px;
+          padding: 10px;
+          margin-bottom: 5px;
+          width: 100%;
+
+          &:hover {
+            background-color: #f1f1f1;
+          }
+
+          .Date {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 5px;
+          }
+
+          .Name {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 3px;
+          }
+
+          .Email {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 3px;
+          }
+
+          .ProfilePicture {
+            font-size: 16px;
+            color: #333;
+
+            img {
+              width: 50px;
+              height: 50px;
+              border-radius: 50%;
+              object-fit: cover;
+              vertical-align: middle;
+            }
+          }
+        }
+
+        .NoProfileHistory {
+          font-size: 16px;
+          color: #999;
+          text-align: center;
+          margin-top: 10px;
+        }
+      }
+    }
+  }
+}

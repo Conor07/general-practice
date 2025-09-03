@@ -1,0 +1,137 @@
+.EditProfileModal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 300px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  background-color: #ffffff;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+
+  .Title {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+
+  .EditProfileForm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    max-height: 300px;
+    overflow-y: auto;
+    padding-bottom: 40px; /* Space for footer */
+
+    label {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      font-size: 14px;
+      width: 100%;
+
+      input {
+        margin-top: 5px;
+        padding: 8px;
+        width: 100%;
+        box-sizing: border-box;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+    }
+
+    .Field {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      font-size: 14px;
+      width: 100%;
+
+      input {
+        margin-top: 5px;
+        padding: 8px;
+        width: 100%;
+        box-sizing: border-box;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+
+      .Error {
+        color: red;
+        font-size: 12px;
+        margin-top: 5px;
+      }
+    }
+
+    .ProfilePictureInput {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      font-size: 14px;
+      width: 100%;
+
+      input {
+        margin-top: 5px;
+        padding: 8px;
+        width: 100%;
+        box-sizing: border-box;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+    }
+
+    .Footer {
+      position: absolute;
+      bottom: 0;
+      height: 40px;
+      padding: 5px;
+      background-color: #fff;
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      margin-top: 10px;
+      gap: 10px;
+      border-radius: 0 0 8px 8px;
+
+      button {
+        padding: 8px 12px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        width: 100%;
+
+        &.SaveButton {
+          background-color: #4caf50;
+          color: white;
+
+          &:hover {
+            background-color: #45a049;
+          }
+
+          &:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+          }
+        }
+
+        &.CancelButton {
+          background-color: #f44336;
+          color: white;
+
+          &:hover {
+            background-color: #da190b;
+          }
+        }
+      }
+    }
+  }
+}

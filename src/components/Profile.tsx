@@ -37,18 +37,18 @@ export default function Profile() {
   }, [dispatch, profileData?.name, profileData?.email, signedIn?.signedIn]);
 
   return (
-    <div>
+    <div className="ProfileContainer">
       {loading ? (
         <div className="LoadingProfile">Loading profile...</div>
       ) : (
         <div className="Profile">
-          <h2>Profile:</h2>
+          <h2 className="Title">Profile:</h2>
 
-          <div>Name: {profileData?.name ?? "No Name"}</div>
+          <div className="Name">Name: {profileData?.name ?? "No Name"}</div>
 
-          <div>Email: {profileData?.email ?? "No email"}</div>
+          <div className="Email">Email: {profileData?.email ?? "No email"}</div>
 
-          <div>
+          <div className="ProfilePicture">
             Profile Picture:{" "}
             {profileData?.profilePicture ? (
               <img
@@ -63,62 +63,65 @@ export default function Profile() {
           </div>
 
           <button
+            className="EditProfileButton"
             disabled={loading || editProfile}
             onClick={() => setEditProfile(true)}
           >
             Edit Profile
           </button>
 
-          <h3>Profile Update History:</h3>
+          <div className="ProfileHistory">
+            <h3 className="HistoryTitle">Profile Update History:</h3>
 
-          <button
-            className="ClearProfileHistory"
-            onClick={() => {
-              dispatch({ type: "PROFILE/CLEAR_PROFILE_HISTORY" });
-            }}
-            disabled={
-              loading ||
-              editProfile ||
-              !profileHistory ||
-              (profileHistory && profileHistory.length === 0)
-            }
-          >
-            Clear Profile History
-          </button>
+            <button
+              className="ClearProfileHistory"
+              onClick={() => {
+                dispatch({ type: "PROFILE/CLEAR_PROFILE_HISTORY" });
+              }}
+              disabled={
+                loading ||
+                editProfile ||
+                !profileHistory ||
+                (profileHistory && profileHistory.length === 0)
+              }
+            >
+              Clear Profile History
+            </button>
 
-          {profileHistory && profileHistory.length > 0 ? (
-            <ul>
-              {profileHistory.reverse().map((entry, index) => (
-                <li key={index}>
-                  <div>
-                    <strong>Updated At:</strong>{" "}
-                    {new Date(entry.timestamp).toLocaleString()}
-                  </div>
-                  <div>
-                    <strong>Name:</strong> {entry.name}
-                  </div>
-                  <div>
-                    <strong>Email:</strong> {entry.email}
-                  </div>
-                  <div>
-                    <strong>Profile Picture:</strong>{" "}
-                    {entry.profilePicture ? (
-                      <img
-                        src={URL.createObjectURL(entry.profilePicture)}
-                        alt="Profile"
-                        width={50}
-                        height={50}
-                      />
-                    ) : (
-                      "No profile picture"
-                    )}
-                  </div>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <div>No profile updates yet.</div>
-          )}
+            {profileHistory && profileHistory.length > 0 ? (
+              <ul className="ProfileHistoryList">
+                {profileHistory.reverse().map((entry, index) => (
+                  <li className="ProfileHistoryListItem" key={index}>
+                    <div className="Date">
+                      <strong>Updated At:</strong>{" "}
+                      {new Date(entry.timestamp).toLocaleString()}
+                    </div>
+                    <div className="Name">
+                      <strong>Name:</strong> {entry.name}
+                    </div>
+                    <div className="Email">
+                      <strong>Email:</strong> {entry.email}
+                    </div>
+                    <div className="ProfilePicture">
+                      <strong>Profile Picture:</strong>{" "}
+                      {entry.profilePicture ? (
+                        <img
+                          src={URL.createObjectURL(entry.profilePicture)}
+                          alt="Profile"
+                          width={50}
+                          height={50}
+                        />
+                      ) : (
+                        "No profile picture"
+                      )}
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <div className="NoProfileHistory">No profile updates yet.</div>
+            )}
+          </div>
         </div>
       )}
 

@@ -30,95 +30,101 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({ onClose }) => {
   };
 
   return (
-    <Formik
-      initialValues={initialValues}
-      validationSchema={profileValidationSchema}
-      onSubmit={(values, { resetForm }) => {
-        dispatch({ type: "PROFILE/UPDATE_PROFILE", payload: values });
+    <div className="EditProfileModal">
+      <div className="Title">Edit Profile</div>
 
-        dispatch({
-          type: "PROFILE/UPDATE_PROFILE_HISTORY",
-          payload: profileHistory
-            ? [{ ...values, timestamp: Date.now() }, ...profileHistory]
-            : [
-                {
-                  ...values,
-                  timestamp: Date.now(),
-                },
-              ],
-        });
+      <Formik
+        initialValues={initialValues}
+        validationSchema={profileValidationSchema}
+        onSubmit={(values, { resetForm }) => {
+          dispatch({ type: "PROFILE/UPDATE_PROFILE", payload: values });
 
-        resetForm();
-        if (onClose) onClose();
-      }}
-    >
-      {({ setFieldValue, setFieldError, isValid, isSubmitting, errors }) => (
-        <Form>
-          <div>
-            <label>Name:</label>
+          dispatch({
+            type: "PROFILE/UPDATE_PROFILE_HISTORY",
+            payload: profileHistory
+              ? [{ ...values, timestamp: Date.now() }, ...profileHistory]
+              : [
+                  {
+                    ...values,
+                    timestamp: Date.now(),
+                  },
+                ],
+          });
 
-            <Field name="name" />
+          resetForm();
+          if (onClose) onClose();
+        }}
+      >
+        {({ setFieldValue, setFieldError, isValid, isSubmitting, errors }) => (
+          <Form className="EditProfileForm">
+            <div className="Field">
+              <label>Name:</label>
 
-            <ErrorMessage name="name" component="div" />
-          </div>
+              <Field name="name" />
 
-          <div>
-            <label>Email:</label>
+              <ErrorMessage className="Error" name="name" component="div" />
+            </div>
 
-            <Field name="email" type="email" />
+            <div className="Field">
+              <label>Email:</label>
 
-            <ErrorMessage name="email" component="div" />
-          </div>
+              <Field name="email" type="email" />
 
-          <div>
-            <label>Profile Picture:</label>
+              <ErrorMessage className="Error" name="email" component="div" />
+            </div>
 
-            <input
-              name="profilePicture"
-              type="file"
-              accept="image/*"
-              onChange={(event) => {
-                const file = event.currentTarget.files
-                  ? event.currentTarget.files[0]
-                  : null;
+            <div className="ProfilePictureInput">
+              <label>Profile Picture:</label>
 
-                if (file) {
-                  if (!fileCorrectSize(file)) {
-                    setFieldError(
-                      "profilePicture",
-                      "File size exceeds 250KB limit"
-                    );
+              <input
+                name="profilePicture"
+                type="file"
+                accept="image/*"
+                onChange={(event) => {
+                  const file = event.currentTarget.files
+                    ? event.currentTarget.files[0]
+                    : null;
+
+                  if (file) {
+                    if (!fileCorrectSize(file)) {
+                      setFieldError(
+                        "profilePicture",
+                        "File size exceeds 250KB limit"
+                      );
+                    } else {
+                      setFieldValue("profilePicture", file);
+                    }
                   } else {
-                    setFieldValue("profilePicture", file);
+                    setFieldValue("profilePicture", null);
                   }
-                } else {
-                  setFieldValue("profilePicture", null);
-                }
-              }}
-            />
+                }}
+              />
 
-            {errors.profilePicture && (
-              <div style={{ color: "red" }}>{errors.profilePicture}</div>
-            )}
-            {/* <ErrorMessage name="profilePicture" component="div" /> */}
-          </div>
+              {errors.profilePicture && (
+                <div className="Error">{errors.profilePicture}</div>
+              )}
+              {/* <ErrorMessage name="profilePicture" component="div" /> */}
+            </div>
 
-          <button
-            className="CloseModal"
-            onClick={() => {
-              if (onClose) onClose();
-            }}
-            disabled={!onClose}
-          >
-            Cancel
-          </button>
+            <div className="Footer">
+              <button
+                className="CloseModal"
+                onClick={() => {
+                  if (onClose) onClose();
+                }}
+                disabled={!onClose}
+              >
+                Cancel
+              </button>
 
-          <button disabled={!isValid || isSubmitting} type="submit">
-            Submit
-          </button>
-        </Form>
-      )}
-    </Formik>
+              <button disabled={!isValid || isSubmitting} type="submit">
+                Submit
+              </button>
+            </div>
+          </Form>
+        )}
+      </Formik>
+    </div>
   );
 };
 

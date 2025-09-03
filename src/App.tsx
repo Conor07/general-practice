@@ -1,6 +1,9 @@
-import React, { useEffect } from "react";
+import "./styles/app.scss";
+import "./styles/profile.scss";
+import "./styles/editProfileModal.scss";
+import "./styles/signIn.scss";
 
-import "./App.css";
+import React, { useEffect } from "react";
 import Profile from "./components/Profile";
 import { AppContext, AppProvider } from "./context/AppContext";
 import { ErrorMessage, Field, Form, Formik } from "formik";
@@ -45,22 +48,22 @@ export default function App() {
   }, [state?.profile?.profileData?.name]);
   return (
     <div className="App">
-      <header>
+      <nav className="NavBar">
         <h1>Profile Management App</h1>
+
+        {state?.signedIn?.signedIn && (
+          <div className="Name">{state?.profile?.profileData?.name ?? ""}</div>
+        )}
 
         {state?.signedIn?.signedIn && (
           <button className="SignOutButton" onClick={handleSignOut}>
             Sign Out
           </button>
         )}
-      </header>
+      </nav>
 
-      {state?.signedIn?.signedIn ? (
-        <div className="Name">{state?.profile?.profileData?.name ?? ""}</div>
-      ) : (
+      {!state?.signedIn?.signedIn && (
         <div className="SignIn">
-          <p>Please sign in.</p>
-
           <Formik
             initialValues={{ name: "", email: "" }}
             onSubmit={(values) => {
@@ -69,27 +72,33 @@ export default function App() {
             validationSchema={signInValidationSchema}
           >
             {({ isValid, isSubmitting }) => (
-              <Form>
-                <div>
+              <Form className="SignInForm">
+                <div className="Title">Please sign in.</div>
+
+                <div className="Field">
                   <label>Name:</label>
 
                   <Field name="name" />
 
-                  <ErrorMessage name="name" component="div" />
+                  <ErrorMessage className="Error" name="name" component="div" />
                 </div>
 
-                <div>
+                <div className="Field">
                   <label>Email:</label>
 
                   <Field name="email" type="email" />
 
-                  <ErrorMessage name="email" component="div" />
+                  <ErrorMessage
+                    className="Error"
+                    name="email"
+                    component="div"
+                  />
                 </div>
 
                 <button
+                  className="SignInButton"
                   type="submit"
                   disabled={!isValid || isSubmitting}
-                  className="SignInButton"
                 >
                   Sign In
                 </button>
